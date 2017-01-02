@@ -1,27 +1,31 @@
 # ember-metrics-chameleon-adapter
 
-This README outlines the details of collaborating on this Ember addon.
+This addon provides a simple adapter for [ember-metrics](https://github.com/poteto/ember-metrics/)
+that wraps the [chameleon](https://www.trychameleon.com/) onboarding library.
 
-## Installation
+The chameleon library is not **exactly** a metrics platform, but the functionality it does
+track user activity to decide when to help the user, and implement it as adapter for ember-metrics
+ended up being quite nice.
 
-* `git clone <repository-url>` this repository
-* `cd ember-metrics-chameleon-adapter`
-* `npm install`
-* `bower install`
+### Features
 
-## Running
+- **Lazy intialization**: The chameleon library is big enough to not want to load it for
+every user. With `ember-metrics` lazy initialization, you can load it only when you have to.
 
-* `ember serve`
-* Visit your app at [http://localhost:4200](http://localhost:4200).
+- **Fastboot aware**: The library simply won't load if your app is running in fastboot.
 
-## Running Tests
+### Usage:
 
-* `npm test` (Runs `ember try:each` to test your addon against multiple Ember versions)
-* `ember test`
-* `ember test --server`
+Configure it in the `config/environment.js` as any other adapter for ember-metrics:
 
-## Building
-
-* `ember build`
-
-For more information on using ember-cli, visit [https://ember-cli.com/](https://ember-cli.com/).
+```js
+    metricsAdapters: { // or `lazyMetricsAdapters`
+      chameleon: {
+        name: 'chameleon',
+        environments: ['all'], // No need of avoid development/test. Methods are noops.
+        config: {
+          token: 'your-token-here'
+        }
+      }
+    }
+```
